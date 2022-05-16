@@ -1,0 +1,11 @@
+select {
+	background-color: transparent;
+	border: none;
+	font-size: 18px;
+	color: #fca311;
+	width: 130px;
+	margin: 0px 20px;
+}
+option {
+	background-color: #14213d;
+}

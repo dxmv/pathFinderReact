@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useSelector } from "react-redux";
+import Grid from "./components/Grid/Grid";
+import Nav from "./components/Navigation/Nav";
+import { RootState } from "./redux/store";
+import Notification from "./components/Notification/Notification";
+import Legend from "./components/Legend/Legend";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const notifications = useSelector(
+		(state: RootState) => state.notification.notifications
+	);
+
+	return (
+		<>
+			<Nav />
+			<Grid />
+			<Legend />
+
+			<div id="notifications">
+				{notifications.slice(0, 4).map(n => (
+					<Notification key={n.id} message={n.message} id={n.id} />
+				))}
+			</div>
+		</>
+	);
 }
 
 export default App;

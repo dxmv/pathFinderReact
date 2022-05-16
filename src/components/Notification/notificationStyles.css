@@ -1,0 +1,47 @@
+.notification {
+	background-color: white;
+	height: 80px;
+	box-shadow: 6px 8px 16px -4px rgba(0, 0, 0, 0.54);
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	margin-bottom: 20px;
+	animation-name: slidein;
+	animation-iteration-count: 1;
+	animation-duration: 0.5s;
+}
+
+.notification-end {
+	animation-name: slideout;
+	animation-iteration-count: 1;
+	animation-duration: 0.5s;
+}
+
+@keyframes slidein {
+	0% {
+		margin-left: 200%;
+		width: 100%;
+	}
+	100% {
+		width: 100%;
+		margin-left: 0%;
+	}
+}
+
+@keyframes slideout {
+	0% {
+		margin-left: 0%;
+		width: 100%;
+	}
+	100% {
+		width: 100%;
+		margin-left: 200%;
+	}
+}
+
+.notification-message {
+	width: 100%;
+	font-size: 20px;
+	font-weight: 700;
+}

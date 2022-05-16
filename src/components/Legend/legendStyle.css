@@ -1,0 +1,18 @@
+#legend {
+	width: 80%;
+	margin: auto;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	display: flex;
+	justify-content: space-between;
+}
+.legend-item {
+	display: flex;
+	align-items: center;
+	max-width: 10%;
+}
+.legend-item-name {
+	font-size: 20px;
+	font-weight: 500;
+	margin-left: 5px;
+}

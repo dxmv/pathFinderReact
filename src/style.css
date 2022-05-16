@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+
+* {
+	font-family: "Raleway", sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	outline: none;
+}
+
+#grid {
+	width: 80%;
+	height: 60%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+}
+.row {
+	display: flex;
+}
+
+.node {
+	position: relative;
+	border: 1px solid black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	border-right: none;
+	border-bottom: none;
+}
+
+.checked {
+	background-color: #ffda00;
+	animation-name: changeCheckedColor;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: ease;
+}
+
+.path {
+	background-color: #8d00d2;
+	animation-name: changePathColor;
+	animation-duration: 1s;
+	animation-iteration-count: 1;
+	animation-timing-function: ease;
+}
+
+@keyframes changePathColor {
+	0% {
+		background-color: #00d4ff;
+	}
+	25% {
+		background-color: #2921bf;
+	}
+	50% {
+		background-color: #38149a;
+	}
+	75% {
+		background-color: #450979;
+	}
+	100% {
+		background-color: #8d00d2;
+	}
+}
+
+@keyframes changeCheckedColor {
+	0% {
+		background-color: #ff9a00;
+	}
+	25% {
+		background-color: #dda327;
+	}
+	50% {
+		background-color: #e2ba06;
+	}
+	75% {
+		background-color: #dfca25;
+	}
+	100% {
+		background-color: #ffda00;
+	}
+}
+
+.droppable-node {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: yellow;
+}
+
+#notifications {
+	position: absolute;
+	right: 2%;
+	top: 80px;
+	width: 300px;
+}
+
+body {
+	overflow-x: hidden;
+}

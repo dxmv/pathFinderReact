@@ -1,0 +1,39 @@
+nav {
+	background-color: #14213d;
+	padding: 8px 15px;
+	display: flex;
+	margin-bottom: 30px;
+	justify-content: space-between;
+	align-items: center;
+	height: 60px;
+}
+
+#header {
+	font-size: 32px;
+	color: #ffffff;
+}
+
+/* Start button */
+#btn-start {
+	background-color: white;
+	font-weight: 600;
+	font-size: 20px;
+	padding: 5px 8px;
+	color: #14213d;
+	cursor: pointer;
+	border: none;
+}
+
+#btn-start:hover {
+	color: #fca311;
+	transition: 0.5s;
+}
+
+/* Filters */
+
+#filters {
+	display: flex;
+	justify-content: space-between;
+	min-width: 30%;
+	align-items: center;
+}
