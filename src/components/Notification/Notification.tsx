@@ -1,13 +1,8 @@
 import "./notificationStyles.css";
 import { ImNotification } from "react-icons/im";
+import React from "react";
 
-export default function Notification({
-	message,
-	id,
-}: {
-	message: string;
-	id: string;
-}) {
+function Notification({ message, id }: { message: string; id: string }) {
 	return (
 		<div className="notification" id={id}>
 			<ImNotification
@@ -19,3 +14,5 @@ export default function Notification({
 		</div>
 	);
 }
+
+export default React.memo(Notification);

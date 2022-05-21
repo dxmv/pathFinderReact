@@ -11,8 +11,7 @@ export default function Start() {
 			isDragging: !!monitor.isDragging(),
 		}),
 	}));
-	// const startCoords = useSelector((state: RootState) => state.grid.startCoords);
-	// const endCoords = useSelector((state: RootState) => state.grid.endCoords);
+
 	return (
 		<div className="node player" ref={drag}>
 			<svg

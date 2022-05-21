@@ -3,6 +3,7 @@ export interface INode {
 	isFinish: boolean;
 	isPath: boolean;
 	isChecked: boolean;
+	isWall: boolean;
 
 	col: number;
 	row: number;

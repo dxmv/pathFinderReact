@@ -61,6 +61,7 @@ const gridReducer = (state = initialState, action: ActionType): IGridState => {
 						col: j,
 						row: i,
 						isChecked: false,
+						isWall: false,
 					});
 				}
 				arr.push(currentRow);

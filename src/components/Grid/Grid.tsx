@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { INode } from "../../types";
@@ -13,6 +13,7 @@ const GRID_ID = "grid";
 export default function Grid() {
 	const grid: INode[][] = useSelector((state: RootState) => state.grid.board);
 	const size = useSelector((state: RootState) => state.filter.size);
+	const [draw, setDraw] = useState<boolean>(false);
 
 	const nodeSize = useCallback((): { width: number; height: number } => {
 		const el = document.getElementById(GRID_ID);
@@ -44,7 +45,12 @@ export default function Grid() {
 								) : grid[i][j].isFinish ? (
 									<End />
 								) : (
-									<Node id={`${i} ${j}`} node={grid[i][j]} />
+									<Node
+										id={`${i} ${j}`}
+										node={grid[i][j]}
+										draw={draw}
+										setDraw={setDraw}
+									/>
 								)}
 							</Square>
 						))}

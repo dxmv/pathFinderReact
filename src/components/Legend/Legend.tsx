@@ -9,7 +9,7 @@ interface ILegendItem {
 	name: string;
 }
 
-export default function Legend() {
+function Legend() {
 	const items: ILegendItem[] = [
 		{
 			child: (
@@ -69,7 +69,15 @@ export default function Legend() {
 			),
 			name: "Checked",
 		},
-		{ child: <FiTarget size={25} />, name: "Target" },
+		{
+			child: (
+				<div
+					className="node wall"
+					style={{ width: "25px", height: "25px", border: "1px solid black" }}
+				></div>
+			),
+			name: "Wall",
+		},
 	];
 
 	return (
@@ -80,3 +88,5 @@ export default function Legend() {
 		</div>
 	);
 }
+
+export default React.memo(Legend);

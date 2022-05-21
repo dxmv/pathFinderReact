@@ -32,54 +32,54 @@
 }
 
 .checked {
-	background-color: #ffda00;
+	background-color: #fca311;
 	animation-name: changeCheckedColor;
-	animation-duration: 1s;
+	animation-duration: 500ms;
 	animation-iteration-count: 1;
 	animation-timing-function: ease;
 }
 
 .path {
-	background-color: #8d00d2;
+	background-color: #c111fc;
 	animation-name: changePathColor;
-	animation-duration: 1s;
+	animation-duration: 450ms;
 	animation-iteration-count: 1;
 	animation-timing-function: ease;
 }
 
 @keyframes changePathColor {
 	0% {
-		background-color: #00d4ff;
+		transform: scale(0);
 	}
-	25% {
-		background-color: #2921bf;
+	33% {
+		background-color: #fc11c1;
+		transform: scale(0.25);
 	}
-	50% {
-		background-color: #38149a;
-	}
-	75% {
-		background-color: #450979;
+	66% {
+		background-color: #4c11fc;
+		transform: scale(0.5);
 	}
 	100% {
-		background-color: #8d00d2;
+		transform: scale(1);
+		background-color: #c111fc;
 	}
 }
 
 @keyframes changeCheckedColor {
 	0% {
-		background-color: #ff9a00;
+		transform: scale(0);
 	}
-	25% {
-		background-color: #dda327;
+	33% {
+		background-color: #fc6711;
+		transform: scale(0.25);
 	}
-	50% {
-		background-color: #e2ba06;
-	}
-	75% {
-		background-color: #dfca25;
+	66% {
+		background-color: #fcdd11;
+		transform: scale(0.5);
 	}
 	100% {
-		background-color: #ffda00;
+		transform: scale(1);
+		background-color: #fca311;
 	}
 }
 
@@ -101,4 +101,10 @@
 
 body {
 	overflow-x: hidden;
+}
+
+.wall {
+	background-color: #000000;
+	transform: scale(1);
+	transition: all 450ms ease 0ms;
 }
