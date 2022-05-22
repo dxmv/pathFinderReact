@@ -5,6 +5,7 @@ import Nav from "./components/Navigation/Nav";
 import { RootState } from "./redux/store";
 import Notification from "./components/Notification/Notification";
 import Legend from "./components/Legend/Legend";
+import Description from "./components/Description/Description";
 
 function App() {
 	const notifications = useSelector(
@@ -14,6 +15,7 @@ function App() {
 	return (
 		<>
 			<Nav />
+			<Description />
 			<Grid />
 			<Legend />
 

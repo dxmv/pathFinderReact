@@ -32,7 +32,18 @@ export default function Square({
 		() => ({
 			accept: [dragTypes.START, dragTypes.END],
 			drop: (item: any) => {
-				if (item.id === "player") {
+				if (
+					item.id === "player" &&
+					player.canMovePlayer(
+						x,
+						y,
+						startCoords.startRow,
+						startCoords.startCol,
+						endCoords.endRow,
+						endCoords.endCol,
+						grid
+					)
+				) {
 					player.movePlayer(
 						x,
 						y,
@@ -42,7 +53,18 @@ export default function Square({
 						dispatch,
 						"start"
 					);
-				} else if (item.id === "end") {
+				} else if (
+					item.id === "end" &&
+					player.canMovePlayer(
+						x,
+						y,
+						endCoords.endRow,
+						endCoords.endCol,
+						startCoords.startRow,
+						startCoords.startCol,
+						grid
+					)
+				) {
 					player.movePlayer(
 						x,
 						y,

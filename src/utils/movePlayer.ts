@@ -27,7 +27,8 @@ const canMovePlayer = (
 	finishX: number,
 	finishY: number,
 	prevX: number,
-	prevY: number
+	prevY: number,
+	grid: INode[][]
 ) => {
 	// If we are trying to place the start on the start square
 	if (toX === prevX && toY === prevY) {
@@ -36,6 +37,11 @@ const canMovePlayer = (
 
 	// If we are trying to place the start on the end square
 	if (finishX === toX && finishY === toY) {
+		return false;
+	}
+
+	// If we are trying to place on the wall
+	if (grid[toX][toY].isWall) {
 		return false;
 	}
 

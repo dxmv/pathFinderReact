@@ -1,0 +1,13 @@
+#description {
+	margin: 10px 0px;
+	text-align: center;
+	font-size: 20px;
+	color: #14213d;
+	min-height: 24px;
+}
+
+.special {
+	font-weight: 800;
+	font-style: italic;
+	color: #fca311;
+}
