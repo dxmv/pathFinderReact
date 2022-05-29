@@ -5,7 +5,8 @@ import { getShortest } from "./getShortest";
 const dijkstra = async (
 	startCoords: { x: number; y: number },
 	endCoords: { x: number; y: number },
-	arr: INode[][]
+	arr: INode[][],
+	type: "Dijkstra" | "A*"
 ): Promise<[INode[], INode[]]> => {
 	const grid: INode[][] = [...arr];
 
@@ -26,7 +27,18 @@ const dijkstra = async (
 		// Checking neighbors and changing their distance
 		const neighbors = getNeighbors(grid, current, visited);
 		if (neighbors.length > 0) {
-			updateNeighbors(neighbors, current, map, parents);
+			updateNeighbors(
+				neighbors,
+				current,
+				map,
+				parents,
+				type === "A*"
+					? heuristic(
+							{ x: current.row, y: current.col },
+							{ x: endCoords.x, y: endCoords.y }
+					  )
+					: 1
+			);
 		}
 
 		current.isChecked = true;
@@ -42,7 +54,7 @@ const dijkstra = async (
 };
 
 // Initializing the map
-const initMap = (
+export const initMap = (
 	grid: INode[][],
 	startCoords: { x: number; y: number }
 ): Map<string, number> => {
@@ -60,7 +72,7 @@ const initMap = (
 };
 
 // Initiate parents into a map
-const initParents = (
+export const initParents = (
 	grid: INode[][],
 	startCoords: { x: number; y: number }
 ): Map<string, string | null> => {
@@ -77,7 +89,7 @@ const initParents = (
 	return map;
 };
 
-const getSmallestNode = (
+export const getSmallestNode = (
 	map: Map<string, number>,
 	visited: INode[]
 ): { i: number; j: number } => {
@@ -94,20 +106,28 @@ const getSmallestNode = (
 	return { i: Number(row), j: Number(col) };
 };
 
-const updateNeighbors = (
+export const updateNeighbors = (
 	neighbors: INode[],
 	current: INode,
 	map: Map<string, number>,
-	parents: Map<string, string | null>
+	parents: Map<string, string | null>,
+	cost: number
 ) => {
 	for (let n of neighbors) {
-		const newCost = Number(map.get(`${current.row} ${current.col}`)) + 1;
+		const newCost = Number(map.get(`${current.row} ${current.col}`)) + cost;
 		const oldCost = Number(map.get(`${n.row} ${n.col}`));
 		if (newCost < oldCost) {
 			map.set(`${n.row} ${n.col}`, newCost);
 			parents.set(`${n.row} ${n.col}`, `${current.row} ${current.col}`);
 		}
 	}
+};
+
+const heuristic = (
+	a: { x: number; y: number },
+	b: { x: number; y: number }
+): number => {
+	return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 };
 
 export default dijkstra;

@@ -4,6 +4,7 @@ import {
 	IAlgorithmAction,
 	IGridAction,
 	ISpeedAction,
+	IMazeAction,
 } from "../../redux/filterReducer/filterTypes";
 import CustomSelect from "./CustomSelect";
 
@@ -17,7 +18,8 @@ export default function CustomSelectManager({
 	reduxAction:
 		| ((algorithm: unknown) => IAlgorithmAction)
 		| ((speed: unknown) => ISpeedAction)
-		| ((size: unknown) => IGridAction);
+		| ((size: unknown) => IGridAction)
+		| ((maze: unknown) => IMazeAction);
 }) {
 	const [current, setCurrent] = useState(defaultVal);
 	const dispatch = useDispatch();

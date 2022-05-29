@@ -4,6 +4,7 @@ const initialState: FilterState = {
 	algorithm: "None",
 	speed: 0,
 	size: { width: 50, height: 25 },
+	maze: null,
 };
 
 const filterReducer = (
@@ -25,6 +26,11 @@ const filterReducer = (
 			return {
 				...state,
 				size: action.payload,
+			};
+		case "CHANGE_MAZE":
+			return {
+				...state,
+				maze: action.payload,
 			};
 		default:
 			return state;

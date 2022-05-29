@@ -3,9 +3,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import "./descriptionStyles.css";
 
-export default function Description() {
+function Description() {
 	const filters = useSelector((state: RootState) => state.filter);
-	console.log(filters);
 	return (
 		<div id="description">
 			{filters.algorithm !== "None" && (
@@ -24,3 +23,5 @@ export default function Description() {
 		</div>
 	);
 }
+
+export default React.memo(Description);

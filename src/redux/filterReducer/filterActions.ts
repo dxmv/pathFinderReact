@@ -5,6 +5,8 @@ import {
 	ISpeedAction,
 	IGridAction,
 	GridSize,
+	IMazeAction,
+	Mazes,
 } from "./filterTypes";
 
 const CHANGE_ALG = (algorithm: unknown): IAlgorithmAction => {
@@ -35,4 +37,12 @@ const CHANGE_SIZE = (size: unknown): IGridAction => {
 	};
 };
 
-export { CHANGE_ALG, CHANGE_SPEED, CHANGE_SIZE };
+const CHANGE_MAZE = (maze: unknown): IMazeAction => {
+	let payload = maze as Mazes;
+	return {
+		type: "CHANGE_MAZE",
+		payload: payload,
+	};
+};
+
+export { CHANGE_ALG, CHANGE_SPEED, CHANGE_SIZE, CHANGE_MAZE };

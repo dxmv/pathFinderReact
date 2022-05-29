@@ -11,6 +11,7 @@ import gridActions from "../../redux/gridReducer/gridActions";
 import dfs from "../../algorithms/dfs";
 import addNotification from "../../utils/addNotification";
 import { visualizeVisitedNodes } from "../../utils/visualizePaths";
+import recursiveDivision from "../../maze algorithms/recursiveDivision";
 
 export default function Main() {
 	const grid: INode[][] = useSelector((state: RootState) => state.grid).board;
@@ -19,6 +20,7 @@ export default function Main() {
 	const alg = useSelector((state: RootState) => state.filter.algorithm);
 	const speed = useSelector((state: RootState) => state.filter.speed);
 	const size = useSelector((state: RootState) => state.filter.size);
+	const maze = useSelector((state: RootState) => state.filter.maze);
 	const dispatch = useDispatch();
 
 	const startAlgorithm = useCallback(async () => {
@@ -29,9 +31,11 @@ export default function Main() {
 				const [visitedNodes, shortestPath] = await dijkstra(
 					{ x: startCoords.startRow, y: startCoords.startCol },
 					{ x: endCoords.endRow, y: endCoords.endCol },
-					grid
+					grid,
+					"Dijkstra"
 				);
 				visualizeVisitedNodes(
+					grid,
 					visitedNodes,
 					shortestPath.reverse(),
 					speed,
@@ -58,6 +62,21 @@ export default function Main() {
 					{ row: endCoords.endRow, col: endCoords.endCol }
 				);
 				visualizeVisitedNodes(
+					grid,
+					visitedNodes,
+					shortestPath.reverse(),
+					speed,
+					dispatch
+				);
+			} else if (alg === "A*") {
+				const [visitedNodes, shortestPath] = await dijkstra(
+					{ x: startCoords.startRow, y: startCoords.startCol },
+					{ x: endCoords.endRow, y: endCoords.endCol },
+					grid,
+					"A*"
+				);
+				visualizeVisitedNodes(
+					grid,
 					visitedNodes,
 					shortestPath.reverse(),
 					speed,
@@ -73,8 +92,19 @@ export default function Main() {
 		dispatch(gridActions.initiateGrid(size.width, size.height));
 	}, [size, dispatch]);
 
+	// useEffect(() => {
+	// 	if (maze === "Recursive Division") {
+	// 		recursiveDivision(Array.from(grid), dispatch);
+	// 	}
+	// }, [maze]);
+
 	return (
 		<div id="filters">
+			<Select
+				defaultVal="No Maze"
+				values={["No Maze", "Recursive Division"]}
+				reduxAction={filterActions.CHANGE_MAZE}
+			/>
 			<Select
 				defaultVal="Speed"
 				values={["Speed", "Slow", "Normal", "Fast"]}
@@ -85,7 +115,7 @@ export default function Main() {
 			</button>
 			<Select
 				defaultVal="Algorithms"
-				values={["Algorithms", "Dijkstra's", "BFS", "DFS"]}
+				values={["Algorithms", "Dijkstra's", "BFS", "DFS", "A*"]}
 				reduxAction={filterActions.CHANGE_ALG}
 			/>
 			<Select
