@@ -28,23 +28,21 @@ const mainDivision = (
 			for (let i = 0 + x; i < height; i++) {
 				grid[i + x][j + y].isWall = true;
 			}
+			// Going right
+			mainDivision(grid, getOrientation(j, height), x, y + j, j, height);
 
 			// Going left
 			mainDivision(grid, getOrientation(j, height), x, y, j, height);
-
-			// Going right
-			mainDivision(grid, getOrientation(j, height), x, y + j, j, height);
 		} else {
 			let i = Math.floor(height / 2);
 			// let noWall = Math.floor(Math.random() * (width - 1));
 			for (let j = 0 + y; j < width; j++) {
 				grid[i + x][j + y].isWall = true;
 			}
-			//Going up
-			mainDivision(grid, getOrientation(width, i), x, y, width, i);
-
 			// Going down
 			mainDivision(grid, getOrientation(width, i), i + x, y, width, i);
+			//Going up
+			mainDivision(grid, getOrientation(width, i), x, y, width, i);
 		}
 	} catch (e) {
 		console.log(e);

@@ -12,6 +12,8 @@ import dfs from "../../algorithms/dfs";
 import addNotification from "../../utils/addNotification";
 import { visualizeVisitedNodes } from "../../utils/visualizePaths";
 import recursiveDivision from "../../maze algorithms/recursiveDivision";
+import recursiveBacktracking from "../../maze algorithms/recursiveBacktracking";
+import animateWalls from "../../utils/animateWalls";
 
 export default function Main() {
 	const grid: INode[][] = useSelector((state: RootState) => state.grid).board;
@@ -86,23 +88,25 @@ export default function Main() {
 		} catch (e: any) {
 			addNotification(dispatch, "Select all parameters");
 		}
-	}, [alg, dispatch, grid, speed, startCoords, endCoords]);
+	}, [alg, grid, speed, startCoords, endCoords]);
 
 	useEffect(() => {
 		dispatch(gridActions.initiateGrid(size.width, size.height));
-	}, [size, dispatch]);
+	}, [size]);
 
-	// useEffect(() => {
-	// 	if (maze === "Recursive Division") {
-	// 		recursiveDivision(Array.from(grid), dispatch);
-	// 	}
-	// }, [maze]);
+	useEffect(() => {
+		if (maze === "Recursive Backtracking") {
+			recursiveBacktracking(Array.from(grid), dispatch);
+			animateWalls(grid, speed === 0 ? 10 : speed);
+			dispatch(gridActions.newGrid(grid));
+		}
+	}, [maze]);
 
 	return (
 		<div id="filters">
 			<Select
 				defaultVal="No Maze"
-				values={["No Maze", "Recursive Division"]}
+				values={["No Maze", "Recursive Division", "Recursive Backtracking"]}
 				reduxAction={filterActions.CHANGE_MAZE}
 			/>
 			<Select
