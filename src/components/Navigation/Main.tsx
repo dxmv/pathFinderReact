@@ -100,10 +100,6 @@ export default function Main() {
 			recursiveBacktracking(Array.from(grid), dispatch);
 			animateWalls(grid, speed === 0 ? 10 : speed);
 			dispatch(gridActions.newGrid(grid));
-		} else if (maze === "Recursive Division") {
-			recursiveDivision(grid, dispatch);
-			animateWalls(grid, 0);
-			dispatch(gridActions.newGrid(grid));
 		} else if (maze === "Prim's") {
 			prim(Array.from(grid));
 			animateWalls(grid, speed === 0 ? 10 : speed);
@@ -115,12 +111,7 @@ export default function Main() {
 		<div id="filters">
 			<Select
 				defaultVal="No Maze"
-				values={[
-					"No Maze",
-					"Recursive Division",
-					"Recursive Backtracking",
-					"Prim's",
-				]}
+				values={["No Maze", "Recursive Backtracking", "Prim's"]}
 				reduxAction={filterActions.CHANGE_MAZE}
 			/>
 			<Select
