@@ -14,6 +14,7 @@ import { visualizeVisitedNodes } from "../../utils/visualizePaths";
 import recursiveDivision from "../../maze algorithms/recursiveDivision";
 import recursiveBacktracking from "../../maze algorithms/recursiveBacktracking";
 import animateWalls from "../../utils/animateWalls";
+import prim from "../../maze algorithms/prims";
 
 export default function Main() {
 	const grid: INode[][] = useSelector((state: RootState) => state.grid).board;
@@ -99,6 +100,14 @@ export default function Main() {
 			recursiveBacktracking(Array.from(grid), dispatch);
 			animateWalls(grid, speed === 0 ? 10 : speed);
 			dispatch(gridActions.newGrid(grid));
+		} else if (maze === "Recursive Division") {
+			recursiveDivision(grid, dispatch);
+			animateWalls(grid, 0);
+			dispatch(gridActions.newGrid(grid));
+		} else if (maze === "Prim's") {
+			prim(Array.from(grid));
+			animateWalls(grid, speed === 0 ? 10 : speed);
+			dispatch(gridActions.newGrid(grid));
 		}
 	}, [maze]);
 
@@ -106,7 +115,12 @@ export default function Main() {
 		<div id="filters">
 			<Select
 				defaultVal="No Maze"
-				values={["No Maze", "Recursive Division", "Recursive Backtracking"]}
+				values={[
+					"No Maze",
+					"Recursive Division",
+					"Recursive Backtracking",
+					"Prim's",
+				]}
 				reduxAction={filterActions.CHANGE_MAZE}
 			/>
 			<Select

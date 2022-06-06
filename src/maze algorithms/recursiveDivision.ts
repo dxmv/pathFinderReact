@@ -4,45 +4,65 @@ import { INode } from "../types";
 type Orientation = "Vertical" | "Horizontal";
 
 const recursiveDivision = (grid: INode[][], dispatch: any) => {
-	mainDivision(grid, "Vertical", 0, 0, grid[0].length, grid.length);
+	mainDivision(grid, "Vertical");
 	dispatch(gridActions.newGrid(grid));
 };
 
-const mainDivision = (
-	grid: INode[][],
-	orientation: Orientation,
-	x: number,
-	y: number,
-	width: number,
-	height: number
-) => {
+const mainDivision = (grid: INode[][], orientation: Orientation) => {
 	try {
-		if (width <= 3 || height <= 3) {
+		if (grid[0].length <= 3 || grid.length <= 3) {
 			return;
 		}
 		if (orientation === "Vertical") {
-			let j = Math.floor(width / 2);
+			let j = Math.floor(grid[0].length / 2);
 			// let noWall = Math.floor(Math.random() * (height - 1));
 
 			// Drawing the wall
-			for (let i = 0 + x; i < height; i++) {
-				grid[i + x][j + y].isWall = true;
+			for (let i = grid[0][0].row; i < grid.length; i++) {
+				grid[i][j].isWall = true;
 			}
 			// Going right
-			mainDivision(grid, getOrientation(j, height), x, y + j, j, height);
+			const right: INode[][] = [];
+			for (let i = grid[0][0].row; i < grid.length; i++) {
+				right.push([]);
+				for (let k = j; k < grid[0].length; k++) {
+					right[i].push(grid[i][k]);
+				}
+			}
+			mainDivision(right, getOrientation(j, grid.length));
 
 			// Going left
-			mainDivision(grid, getOrientation(j, height), x, y, j, height);
-		} else {
-			let i = Math.floor(height / 2);
-			// let noWall = Math.floor(Math.random() * (width - 1));
-			for (let j = 0 + y; j < width; j++) {
-				grid[i + x][j + y].isWall = true;
+			const left: INode[][] = [];
+			for (let i = grid[0][0].row; i < grid.length; i++) {
+				left.push([]);
+				for (let k = 0; k < j; k++) {
+					left[i].push(grid[i][k]);
+				}
 			}
-			// Going down
-			mainDivision(grid, getOrientation(width, i), i + x, y, width, i);
+			mainDivision(left, getOrientation(j, grid.length));
+		} else {
+			let i = Math.floor(grid.length / 2);
+			for (let j = grid[0][0].col; j < grid[0].length; j++) {
+				grid[i][j].isWall = true;
+			}
+			// Going up
+			const up: INode[][] = [];
+			for (let k = 0; k < i; k++) {
+				up.push([]);
+				for (let j = 0; j < grid[k].length; j++) {
+					up[k].push(grid[k][j]);
+				}
+			}
+			mainDivision(up, getOrientation(grid[0].length, i));
 			//Going up
-			mainDivision(grid, getOrientation(width, i), x, y, width, i);
+			const down: INode[][] = [];
+			for (let k = i + 1, helper = 0; k < grid.length; k++, helper++) {
+				down.push([]);
+				for (let j = 0; j < grid[k].length; j++) {
+					down[helper].push(grid[k][j]);
+				}
+			}
+			mainDivision(down, getOrientation(grid[0].length, i));
 		}
 	} catch (e) {
 		console.log(e);

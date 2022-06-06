@@ -2,7 +2,11 @@ export type Algorithms = "Dijkstra's" | "BFS" | "DFS" | "A*" | "None";
 export type Speed = "Slow" | "Normal" | "Fast" | "None";
 export type SpeedNumber = 50 | 25 | 10 | 0;
 export type GridSize = "Small" | "Medium" | "Large";
-export type Mazes = null | "Recursive Division" | "Recursive Backtracking";
+export type Mazes =
+	| null
+	| "Recursive Division"
+	| "Recursive Backtracking"
+	| "Prim's";
 
 export type Size = {
 	width: number;

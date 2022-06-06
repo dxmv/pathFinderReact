@@ -1,5 +1,6 @@
-import gridActions from "../redux/gridReducer/gridActions";
 import { INode } from "../types";
+import addWalls from "./addWalls";
+import isVisitedSet from "./isVisitedSet";
 
 const recursiveBacktracking = (grid: INode[][], dispatch: any) => {
 	// Current node
@@ -12,14 +13,6 @@ const recursiveBacktracking = (grid: INode[][], dispatch: any) => {
 	addWalls(grid);
 
 	makeMaze(grid, current, visited);
-};
-
-const addWalls = (grid: INode[][]) => {
-	for (let i = 0; i < grid.length; i++) {
-		for (let j = 0; j < grid[0].length; j++) {
-			grid[i][j].isWall = true;
-		}
-	}
 };
 
 const makeMaze = (grid: INode[][], current: INode, visited: Set<string>) => {
@@ -69,10 +62,6 @@ const getNeighbors = (grid: INode[][], current: INode): INode[] => {
 		console.log(e);
 		return available;
 	}
-};
-
-const isVisitedSet = (visited: Set<string>, row: number, col: number) => {
-	return visited.has(row + " " + col);
 };
 
 export default recursiveBacktracking;
