@@ -1,46 +1,66 @@
-# Getting Started with Create React App
+# Path Finder
+This project provides tools for visualizing path-finding and maze generation algorithms. It's designed for developers, educators, and enthusiasts who want to understand these algorithms or integrate them into their own applications.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Key Features
+- **Visualization of 4 Different Path-Finding Algorithms**: Breadth-First Search (BFS), Depth-First Search (DFS), Dijkstra's Algorithm, A* Algorithm.
+- **Visualization of 2 Maze Generation Algorithms**: Recursive Backtracking, Prim's Algorithm.
+- **Dynamic Path Finding**: Use path-finding algorithms to find the best path between the start and target points.
+- **Interactive Features**
+	- Change the positions of both the start and target points.
+	- Draw walls (barriers) to create obstacles in the grid.
 
-## Available Scripts
+## How to Run
+To run the project locally, follow these steps:
 
-In the project directory, you can run:
+Clone the repository:
 
-### `npm start`
+```
+git clone https://github.com/dxmv/pathFinderReact.git
+cd pathFinderReact
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Install the necessary dependencies:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+npm install
+```
 
-### `npm test`
+Start the application:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+npm start
+```
+Open your web browser and navigate to http://localhost:3000.
 
-### `npm run build`
+## Algorithms
+### Path-Finding Algorithms
+**1. Breadth-First Search (BFS)**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Explores all nodes at the present depth level before moving on to nodes at the next depth level.
+- Guarantees the shortest path in an unweighted graph.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**2. Depth-First Search (DFS)**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Explores as far as possible along each branch before backtracking.
+- Does not guarantee the shortest path.
 
-### `npm run eject`
+**3. Dijkstra's Algorithm**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Finds the shortest path between the start and target in a graph, which may represent, for example, road networks.
+- Uses a priority queue to explore the shortest known path first.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**4. A Algorithm***
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- An extension of Dijkstra's Algorithm that uses heuristics to improve performance.
+- Finds the shortest path more efficiently by using a cost function f(n) = g(n) + h(n) where:
+	- g(n) is the cost from the start node to n.
+	- h(n) is the heuristic estimate from n to the goal.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+##Maze Generation Algorithms
+**1. Recursive Backtracking**
+- A depth-first search algorithm that starts at a random cell and visits each cell exactly once.
+- Creates a maze by carving passages between cells.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+**2. Prim's Algorithm**
+- A randomized algorithm that starts with a grid full of walls.
+- Grows the maze by adding the lowest-cost wall that connects a visited cell to an unvisited cell.
