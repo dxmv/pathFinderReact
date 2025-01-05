@@ -1,53 +1,27 @@
 import { INode } from "../types";
 
-const getNeighbors = (
+const getUnvisitedNeighbors = (
 	grid: INode[][],
 	current: INode,
-	visited: INode[]
+	visited: Set<INode>
 ): INode[] => {
 	const arr: INode[] = [];
 	const { row, col } = current;
-	if (
-		row > 0 &&
-		isVisited(visited, row - 1, col) &&
-		!isWall(grid, row - 1, col)
-	) {
-		arr.push(grid[row - 1][col]);
-	}
-	if (
-		row < grid.length - 1 &&
-		isVisited(visited, row + 1, col) &&
-		!isWall(grid, row + 1, col)
-	) {
-		arr.push(grid[row + 1][col]);
-	}
-	if (
-		col > 0 &&
-		isVisited(visited, row, col - 1) &&
-		!isWall(grid, row, col - 1)
-	) {
-		arr.push(grid[row][col - 1]);
-	}
-	if (
-		col < grid[0].length - 1 &&
-		isVisited(visited, row, col + 1) &&
-		!isWall(grid, row, col + 1)
-	) {
-		arr.push(grid[row][col + 1]);
+	const dirs = [
+		[row - 1, col],
+		[row + 1, col],
+		[row, col - 1],
+		[row, col + 1],
+	];
+
+	for (const [r, c] of dirs) {
+		if (r >= 0 && r < grid.length && c >= 0 && c < grid[0].length) {
+			if (!visited.has(grid[r][c]) && !grid[r][c].isWall) {
+				arr.push(grid[r][c]);
+			}
+		}
 	}
 	return arr;
 };
 
-export const isVisited = (
-	visited: INode[],
-	row: number,
-	col: number
-): boolean => {
-	return visited.findIndex(el => el.row === row && el.col === col) === -1;
-};
-
-export const isWall = (grid: INode[][], row: number, col: number): boolean => {
-	return grid[row][col].isWall;
-};
-
-export default getNeighbors;
+export default getUnvisitedNeighbors;

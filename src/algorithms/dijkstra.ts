@@ -1,133 +1,84 @@
 import { INode } from "../types";
-import getNeighbors, { isVisited } from "./getNeighbors";
+import getUnvisitedNeighbors from "./getNeighbors";
 import { getShortest } from "./getShortest";
+import { PriorityQueue } from '../utils/PriorityQueue';
 
 const dijkstra = async (
 	startCoords: { x: number; y: number },
 	endCoords: { x: number; y: number },
 	arr: INode[][],
-	type: "Dijkstra" | "A*"
-): Promise<[INode[], INode[]]> => {
+): Promise<{visited: Set<INode>, path: INode[]}> => {
 	const grid: INode[][] = [...arr];
+	const visited: Set<INode> = new Set();
+	const openSet: Set<INode> = new Set();
+	const distances = new Map<string, number>();
+	const parents = new Map<string, string>();
 
-	// Map for distances
-	const map = initMap(grid, startCoords);
+	// Add start node to open set
+	const startNode = grid[startCoords.x][startCoords.y];
+	openSet.add(startNode);
+	
+	const startKey = `${startCoords.x},${startCoords.y}`;
+	distances.set(startKey, 0);
 
-	// Parents to get the shortest path to end
-	const parents = initParents(grid, startCoords);
+	while (openSet.size > 0) {
+		let current: INode | null = null;
+		let minDistance = Infinity;
 
-	// Current node is start
-	let current: INode | undefined = grid[startCoords.x][startCoords.y];
-
-	const visited: INode[] = [];
-	while (current && !current.isFinish) {
-		// Checking this node as visited
-		visited.push(current);
-
-		// Checking neighbors and changing their distance
-		const neighbors = getNeighbors(grid, current, visited);
-		if (neighbors.length > 0) {
-			updateNeighbors(
-				neighbors,
-				current,
-				map,
-				parents,
-				type === "A*"
-					? heuristic(
-							{ x: current.row, y: current.col },
-							{ x: endCoords.x, y: endCoords.y }
-					  )
-					: 1
-			);
+		// Find node with lowest distance
+		for (const node of Array.from(openSet)) {
+			const key = `${node.row},${node.col}`;
+			const distance = distances.get(key) || Infinity;
+			if (distance < minDistance) {
+				minDistance = distance;
+				current = node;
+			}
 		}
 
+		if (!current) break;
+
+		if (current.isFinish) {
+			visited.add(current);
+			break;
+		}
+
+		openSet.delete(current);
+		visited.add(current);
 		current.isChecked = true;
 
-		// Going to the next closest node
-		let { i, j } = getSmallestNode(map, visited);
-		current = grid[i][j];
-	}
-	// Getting the shortest path
-	let currentPath = parents.get(`${endCoords.x} ${endCoords.y}`);
+		const neighbors = getUnvisitedNeighbors(grid, current, visited);
+		const currentKey = `${current.row},${current.col}`;
+		const currentDist = distances.get(currentKey) || 0;
 
-	return [visited, getShortest(grid, currentPath, parents)];
-};
+		for (const neighbor of neighbors) {
+			if (neighbor.isWall) continue;
 
-// Initializing the map
-export const initMap = (
-	grid: INode[][],
-	startCoords: { x: number; y: number }
-): Map<string, number> => {
-	const map = new Map<string, number>();
-	for (let i = 0; i < grid.length; i++) {
-		for (let j = 0; j < grid[i].length; j++) {
-			if (i === startCoords.x && j === startCoords.y) {
-				map.set(`${i} ${j}`, 0);
-			} else {
-				map.set(`${i} ${j}`, Infinity);
+			const neighborKey = `${neighbor.row},${neighbor.col}`;
+			const newDist = currentDist + 1;
+
+			if (newDist < (distances.get(neighborKey) || Infinity)) {
+				distances.set(neighborKey, newDist);
+				parents.set(neighborKey, currentKey);
+				
+				if (!openSet.has(neighbor)) {
+					openSet.add(neighbor);
+				}
 			}
 		}
 	}
-	return map;
-};
 
-// Initiate parents into a map
-export const initParents = (
-	grid: INode[][],
-	startCoords: { x: number; y: number }
-): Map<string, string | null> => {
-	const map = new Map<string, string | null>();
-	for (let i = 0; i < grid.length; i++) {
-		for (let j = 0; j < grid[i].length; j++) {
-			if (i === startCoords.x && j === startCoords.y) {
-				map.set(`${i} ${j}`, "start");
-			} else {
-				map.set(`${i} ${j}`, null);
-			}
-		}
+	const path: INode[] = [];
+	let currentKey = `${endCoords.x},${endCoords.y}`;
+	
+	while (currentKey && parents.has(currentKey)) {
+		const [row, col] = currentKey.split(',').map(Number);
+		path.unshift(grid[row][col]);
+		currentKey = parents.get(currentKey)!;
 	}
-	return map;
-};
 
-export const getSmallestNode = (
-	map: Map<string, number>,
-	visited: INode[]
-): { i: number; j: number } => {
-	let min = Infinity,
-		minKey = "";
-	map.forEach((item, key) => {
-		const [i, j] = key.split(" ");
-		if (item < min && isVisited(visited, Number(i), Number(j))) {
-			min = item;
-			minKey = key;
-		}
-	});
-	const [row, col] = minKey.split(" ");
-	return { i: Number(row), j: Number(col) };
-};
+	path.unshift(grid[startCoords.x][startCoords.y]);
 
-export const updateNeighbors = (
-	neighbors: INode[],
-	current: INode,
-	map: Map<string, number>,
-	parents: Map<string, string | null>,
-	cost: number
-) => {
-	for (let n of neighbors) {
-		const newCost = Number(map.get(`${current.row} ${current.col}`)) + cost;
-		const oldCost = Number(map.get(`${n.row} ${n.col}`));
-		if (newCost < oldCost) {
-			map.set(`${n.row} ${n.col}`, newCost);
-			parents.set(`${n.row} ${n.col}`, `${current.row} ${current.col}`);
-		}
-	}
-};
-
-const heuristic = (
-	a: { x: number; y: number },
-	b: { x: number; y: number }
-): number => {
-	return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+	return { visited, path };
 };
 
 export default dijkstra;

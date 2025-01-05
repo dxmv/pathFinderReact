@@ -4,39 +4,21 @@ export const getUnvisitedNodes = (
 	grid: INode[][],
 	current: INode,
 	unvisitedQueue: INode[],
-	visited: INode[]
+	visited: boolean[][]
 ) => {
 	const { row, col } = current;
-	if (
-		row - 1 >= 0 &&
-		unvisitedQueue.findIndex(el => el.row === row - 1 && el.col === col) ===
-			-1 &&
-		visited.findIndex(el => el.row === row - 1 && el.col === col) === -1
-	) {
-		unvisitedQueue.push(grid[row - 1][col]);
-	}
-	if (
-		col + 1 <= grid[0].length - 1 &&
-		unvisitedQueue.findIndex(el => el.row === row && el.col === col + 1) ===
-			-1 &&
-		visited.findIndex(el => el.row === row && el.col === col + 1) === -1
-	) {
-		unvisitedQueue.push(grid[row][col + 1]);
-	}
-	if (
-		row + 1 <= grid.length - 1 &&
-		unvisitedQueue.findIndex(el => el.row === row + 1 && el.col === col) ===
-			-1 &&
-		visited.findIndex(el => el.row === row + 1 && el.col === col) === -1
-	) {
-		unvisitedQueue.push(grid[row + 1][col]);
-	}
-	if (
-		col - 1 >= 0 &&
-		unvisitedQueue.findIndex(el => el.row === row && el.col === col - 1) ===
-			-1 &&
-		visited.findIndex(el => el.row === row && el.col === col - 1) === -1
-	) {
-		unvisitedQueue.push(grid[row][col - 1]);
+	const dirs = [
+		[row - 1, col],
+		[row, col + 1],
+		[row + 1, col],
+		[row, col - 1],
+	];
+
+	for (const [r, c] of dirs) {
+		if (r >= 0 && r < grid.length && c >= 0 && c < grid[0].length) {
+			if (!visited[r][c]) {
+				unvisitedQueue.push(grid[r][c]);
+			}
+		}
 	}
 };

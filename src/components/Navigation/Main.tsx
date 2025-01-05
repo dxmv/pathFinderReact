@@ -15,6 +15,7 @@ import recursiveDivision from "../../maze algorithms/recursiveDivision";
 import recursiveBacktracking from "../../maze algorithms/recursiveBacktracking";
 import animateWalls from "../../utils/animateWalls";
 import prim from "../../maze algorithms/prims";
+import aStar from "../../algorithms/a-star";
 
 export default function Main() {
 	const grid: INode[][] = useSelector((state: RootState) => state.grid).board;
@@ -31,60 +32,33 @@ export default function Main() {
 			if (alg === "None" || speed === 0) {
 				throw new Error();
 			} else if (alg === "Dijkstra's") {
-				const [visitedNodes, shortestPath] = await dijkstra(
+				const { visited, path } = await dijkstra(
 					{ x: startCoords.startRow, y: startCoords.startCol },
 					{ x: endCoords.endRow, y: endCoords.endCol },
-					grid,
-					"Dijkstra"
+					grid
 				);
-				visualizeVisitedNodes(
-					grid,
-					visitedNodes,
-					shortestPath.reverse(),
-					speed,
-					dispatch
-				);
+				visualizeVisitedNodes(grid, visited, path, speed, dispatch);
 			} else if (alg === "BFS") {
-				const visitedNodes = bfs(
+				const {visited,path	} = bfs(
 					grid,
 					startCoords.startRow,
 					startCoords.startCol
 				);
-				for (let i = 0; i < visitedNodes.length; i++) {
-					setTimeout(() => {
-						addClass(
-							`${visitedNodes[i].row} ${visitedNodes[i].col}`,
-							"checked"
-						);
-					}, speed * i);
-				}
+				visualizeVisitedNodes(grid, visited, path.reverse(), speed, dispatch);
 			} else if (alg === "DFS") {
-				const [visitedNodes, shortestPath] = dfs(
+				const { visited, path } = dfs(
 					grid,
 					{ row: startCoords.startRow, col: startCoords.startCol },
 					{ row: endCoords.endRow, col: endCoords.endCol }
 				);
-				visualizeVisitedNodes(
-					grid,
-					visitedNodes,
-					shortestPath.reverse(),
-					speed,
-					dispatch
-				);
+				visualizeVisitedNodes(grid, visited, path.reverse(), speed, dispatch);
 			} else if (alg === "A*") {
-				const [visitedNodes, shortestPath] = await dijkstra(
+				const { visited, path } = await aStar(
 					{ x: startCoords.startRow, y: startCoords.startCol },
 					{ x: endCoords.endRow, y: endCoords.endCol },
-					grid,
-					"A*"
+					grid
 				);
-				visualizeVisitedNodes(
-					grid,
-					visitedNodes,
-					shortestPath.reverse(),
-					speed,
-					dispatch
-				);
+				visualizeVisitedNodes(grid, visited, path.reverse(), speed, dispatch);
 			}
 		} catch (e: any) {
 			addNotification(dispatch, "Select all parameters");
