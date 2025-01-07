@@ -6,16 +6,15 @@ import Select from "../CustomSelect/Select";
 import { RootState } from "../../redux/store";
 import { INode } from "../../types";
 import * as filterActions from "../../redux/filterReducer/filterActions";
-import addClass from "../../utils/addClass";
 import gridActions from "../../redux/gridReducer/gridActions";
-import dfs from "../../algorithms/dfs";
 import addNotification from "../../utils/addNotification";
 import { visualizeVisitedNodes } from "../../utils/visualizePaths";
-import recursiveDivision from "../../maze algorithms/recursiveDivision";
 import recursiveBacktracking from "../../maze algorithms/recursiveBacktracking";
 import animateWalls from "../../utils/animateWalls";
 import prim from "../../maze algorithms/prims";
 import aStar from "../../algorithms/a-star";
+import randomWalk from "../../algorithms/randomWalk";
+import dfs from "../../algorithms/dfs";
 
 export default function Main() {
 	const grid: INode[][] = useSelector((state: RootState) => state.grid).board;
@@ -38,6 +37,13 @@ export default function Main() {
 					grid
 				);
 				visualizeVisitedNodes(grid, visited, path, speed, dispatch);
+			} else if (alg === "Random Walk") {
+				const { visited, path } = randomWalk(
+					grid,
+					{ row: startCoords.startRow, col: startCoords.startCol },
+					{ row: endCoords.endRow, col: endCoords.endCol }
+				);
+				visualizeVisitedNodes(grid, visited, path.reverse(), speed, dispatch);
 			} else if (alg === "BFS") {
 				const {visited,path	} = bfs(
 					grid,
@@ -98,7 +104,7 @@ export default function Main() {
 			</button>
 			<Select
 				defaultVal="Algorithms"
-				values={["Algorithms", "Dijkstra's", "BFS", "DFS", "A*"]}
+				values={["Algorithms", "Dijkstra's", "BFS", "DFS", "A*", "Random Walk"]}
 				reduxAction={filterActions.CHANGE_ALG}
 			/>
 			<Select

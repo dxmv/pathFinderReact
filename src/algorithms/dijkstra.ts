@@ -1,7 +1,5 @@
 import { INode } from "../types";
 import getUnvisitedNeighbors from "./getNeighbors";
-import { getShortest } from "./getShortest";
-import { PriorityQueue } from '../utils/PriorityQueue';
 
 const dijkstra = async (
 	startCoords: { x: number; y: number },
